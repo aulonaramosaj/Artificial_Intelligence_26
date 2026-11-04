@@ -5,6 +5,7 @@
 | 1 | Social Golfers | DFS me Backtracking | [1_social_golfers/social_golfers.py](1_social_golfers/social_golfers.py) |
 | 2 | Sudoku (Easy / Medium / Hard) | BFS me Backtracking | [2_sudoku/sudoku_bfs.py](2_sudoku/sudoku_bfs.py) |
 | 3 | Latin Square | IDDFS me Backtracking | [3_latin_square/latin_square_iddfs.py](3_latin_square/latin_square_iddfs.py) |
+| 4 | Search Trees: 8-Puzzle, Missionaries & Cannibals, Rotating Workforce Scheduling | Vizatim me dorë | [4_search_trees/](4_search_trees/) |
 
 ```bash
 python3 1_social_golfers/social_golfers.py            # 32 lojtarë, 8 grupe x 4
@@ -286,3 +287,53 @@ Pa heuristikë: qelizat mbushen rresht pas rreshti dhe numrat provohen me radhë
 Prandaj çdo iteracion para të fundit e eksploron gjithë pemën kot. IDDFS është e dobishme  
 kur zgjidhja mund të jetë afër, p.sh. kur kërkohet rruga më e shkurtër.  
 Teorikisht katror latin ekziston për çdo n, por me IDDFS kufiri praktik është **n = 6**.
+
+---
+
+## 4. Search Trees
+
+Për secilin problem është vizatuar me dorë pema e kërkimit: nga gjendja fillestare, me të gjitha veprimet e mundshme, nivel pas niveli, deri te qëllimi.
+
+**Simbolet në fletë:** ✗ = gjendje e pavlefshme (shkel rregullat, nuk zgjerohet), ↺ = gjendje e përsëritur (është parë më herët, nuk zgjerohet), qëllimi është i rrethuar.
+
+### 8-Puzzle – [8_Puzzles.pdf](4_search_trees/8_Puzzles.pdf)
+| | |
+|---|---|
+| **Gjendja** | tabela 3×3 me pllakat 1–8 dhe një vend bosh |
+| **Fillestare** | `1 2 3 / 4 _ 6 / 7 5 8` |
+| **Qëllimi** | `1 2 3 / 4 5 6 / 7 8 _` |
+| **Veprimet** | vendi bosh lëviz Up, Down, Left, Right |
+
+Pema ndërtohet me BFS. Lëvizja që e kthen vendin bosh te prindi nuk vizatohet. Qëllimi arrihet në nivelin 2 me **Down → Right**.
+
+### Missionaries and Cannibals – [Missionaries_and_Cannibals.pdf](4_search_trees/Missionaries_and_Cannibals.pdf)
+| | |
+|---|---|
+| **Gjendja** | `(M, K, B)`: misionarët dhe kanibalët në bregun e majtë, dhe ana e varkës (L = majtas, D = djathtas) |
+| **Fillestare** | `(3,3,L)` |
+| **Qëllimi** | `(0,0,D)` |
+| **Veprimet** | varka mbart `1M`, `2M`, `1K`, `2K` ose `1M1K` |
+| **Rregulli** | në asnjë breg kanibalët nuk janë më shumë se misionarët (kur ka misionarë) |
+
+Pema ndërtohet me BFS. Gjendjet ✗ dhe ↺ nuk zgjerohen. Qëllimi arrihet në nivelin 11 (11 kalime).
+
+### Rotating Workforce Scheduling – [Rotating_Workforce_Schedule.pdf](4_search_trees/Rotating_Workforce_Schedule.pdf)
+RWS i vërtetë është shumë i madh për t'u vizatuar, prandaj përdoret një shembull i vogël.
+
+| | |
+|---|---|
+| **Shembulli** | 3 punëtorë (rreshtat), 3 ditë (kolonat): e hënë, e martë, e mërkurë |
+| **Kërkesa** | çdo ditë: 1 D (dita), 1 N (nata), 1 – (pushim) |
+| **Rregulli** | pas N nuk vjen D të nesërmen, edhe nga dita e fundit e një rreshti te dita e parë e rreshtit tjetër (rrotullimi) |
+| **Gjendja** | orari i mbushur pjesërisht, ditë pas dite |
+| **Fillestare** | orari bosh |
+| **Veprimi** | zgjidh ndërrimet e ditës së radhës për të 3 punëtorët (6 mundësi) |
+| **Qëllimi** | 3 ditët plot, pa asnjë N → D |
+
+Në çdo nivel zgjerohet vetëm nyja e parë; të tjerat zgjerohen njësoj. Qëllimi:
+
+```
+D D D
+N N N
+– – –
+```
